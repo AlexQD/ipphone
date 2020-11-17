@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /*table {*/
+        /*    table-layout: fixed; !* Фиксированная ширина ячеек *!*/
+        /*    width: 100%; !* Ширина таблицы *!*/
+        /*}*/
+        /*!*.wrapper {*!*/
+        /*!*    overflow-x: auto;*!*/
+        /*!*    border: 1px solid red;*!*/
+        /*!*}*!*/
+        /*.col1 { width: 10px; }*/
+        /*.coln { width: 60px; }*/
+        /*.col2 { width: 200px; }*/
+    </style>
+</head>
+
+<body>
+<a href="/"> Главная</a><br>
+<table border="1" class="wrapper">
+<!--    <col style="width: 20px">-->
+<!--    <col style="width: 80px">-->
+<!--    <col style="width: 70px">-->
+<!--    <col style="width: 110px">-->
+<!--    <col style="width: 75px">-->
+<!--    <col style="width: 100px">-->
+<!--    <col style="width: 15px">-->
+<!--    <col style="width: 30px">-->
+<!--    <col style="width: 300px">-->
+    <tr>
+        <th >№</th>>
+        <th >id</th>
+        <th >Тип вызова</th>
+        <th >Номер клиента</th>
+        <th >логин сотрудника</th>
+        <th >номер телефона ч/з который пришел звонок</th>
+        <th >время начала звонка</th>
+        <th >ожид. на линии</th>
+        <th >длит. разг, с</th>
+        <th >Ссылка на запись разговора</th>
+<!--        <th >Прочие вызовы</th>-->
+
+    </tr>
+    <tr th:each="el,iState :${historys.getHistory_array()}">
+        <td th:utext="${iState.index+1}"></td>
+        <td th:utext="${el.getUid_atc()}"></td>
+        <td th:utext="${el.getTypePrint()}"></td>
+        <td th:utext="${el.getClient()}"></td>
+        <td th:utext="${account_service.getAccounttoHistory(el).getAddress()}"></td>
+        <td th:utext="${el.getVia()}"></td>
+        <td th:utext="${el.getStart()}"></td>
+        <td th:utext="${el.getWait()}"></td>
+        <td th:utext="${el.getDuration()}"></td>
+        <td> <a th:href="${el.getRecord()}">
+            <span th:utext="${el.getRecord()}"></span>
+        </a> </td>
+<!--        <td>-->
+<!--            <div th:each="el1 :${el.getAll_call_this_number().getHistory_array()}">-->
+<!--                <span th:utext="${el1.getType()}">Тип вызова</span>-->
+<!--                <span th:utext="${el1.getClient()}">Номер клиента</span>-->
+<!--                <span th:utext="${el1.getStart()}">Время начала звонка</span>-->
+<!--                <br>-->
+<!--            </div>-->
+<!--        </td>-->
+
+    </tr>
+</table>
+
+
+</body>
+</html>

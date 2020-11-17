@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- choose a theme file -->
+    <link th:href="@{/theme.default.css}" rel="stylesheet" />
+    <script
+            src="https://code.jquery.com/jquery-3.5.1.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous"></script>
+<!--    <script type="text/javascript" th:src="@{/jquery-latest.js}"></script>-->
+    <script type="text/javascript" th:src="@{/jquery.tablesorter.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery.tablesorter.widgets.js}"></script>
+    <script>
+        $( document ).ready(function() {
+            $(function () {
+                $("#myTable").tablesorter();
+            });
+        });
+    </script>
+
+    <style>
+        table {
+            table-layout: fixed; /* Фиксированная ширина ячеек */
+            width: 100%; /* Ширина таблицы */
+        }
+    </style>
+</head>
+
+<body>
+<a href="/"> Главная</a><br>
+<table border="1" id="myTable" class="tablesorter, wrapper">
+    <col style="width: 20px">
+    <col style="width: 80px">
+    <col style="width: 70px">
+    <col style="width: 110px">
+    <col style="width: 75px">
+    <col style="width: 100px">
+    <col style="width: 15px">
+    <col style="width: 30px">
+    <col style="width: 300px">
+    <thead>
+    <tr>
+        <th style="width: 5%">№</th>>
+<!--        <th style="width: 5%">id </th>-->
+        <th style="width: 5%">Тип вызова</th>
+        <th style="width: 5%">Номер клиента</th>
+        <th style="width: 5%">логин сотрудника</th>
+        <th style="width: 5%">номер телефона ч/з который пришел звонок</th>
+        <th style="width: 5%">время начала звонка</th>
+        <th style="width: 5%">ожид. на линии</th>
+        <th style="width: 3%">длит. разг, с</th>
+<!--        <th style="width: 30%">Ссылка на запись разговора</th>-->
+        <th style="width: 30%">Прочие вызовы</th>
+
+    </tr>
+    </thead>
+    <tr th:each="el,iState :${historys.getHistory_array()}">
+        <td th:utext="${iState.index+1}"></td>
+<!--        <td th:utext="${el.getUid_atc()}"></td>-->
+        <td th:utext="${el.getType()}"></td>
+        <td th:utext="${el.getClient()}"></td>
+        <td th:utext="${el.getAccount()}"></td>
+        <td th:utext="${el.getVia()}"></td>
+        <td th:utext="${el.getStart()}"></td>
+        <td th:utext="${el.getWait()}"></td>
+        <td th:utext="${el.getDuration()}"></td>
+<!--        <td> <a th:href="${el.getRecord()}">-->
+<!--            <span th:utext="${el.getRecord()}"></span>-->
+<!--        </a> </td>-->
+        <td>
+            <div th:each="el1,iStateEl1 :${el.getAll_call_this_number().getHistory_array()}">
+                <div th:switch="${iStateEl1.index}">
+                    <div th:case="0">
+                        <h5 th:if="${el1.getType() == 'Пропущенный'}" style="background: red">Последний звонок - пропущенный</h5>
+<!--                        <span th:unless="${el1.getType() == 'Пропущенный'}">-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</span>-->
+                    </div>
+                </div>
+                <span th:utext="${el1.getType()}">Тип вызова</span>
+                <span th:utext="${el1.getClient()}">Номер клиента</span>
+                <span th:utext="${el1.getStart()}">Время начала звонка</span>
+                <span th:utext="${el1.getDuration()}">Продолжительность звонка</span>
+                <br>
+            </div>
+        </td>
+
+    </tr>
+</table>
+
+</body>
+</html>
