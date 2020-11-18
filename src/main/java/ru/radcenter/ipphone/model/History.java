@@ -13,7 +13,8 @@ import java.util.Date;
 public class History {
 
     @Id
-    private Long uid_atc;
+    @Column(name="uid_atc")
+    private Long uidAtc;
     private String type;
     private String client; //номер клиента
     private String account;
@@ -27,21 +28,18 @@ public class History {
 
     //Хранит информацию о всех вызовах с этого номера
     @Transient
-    private Historys all_call_this_number;
+    private Historys allCallThisNumber;
 
-    @Transient
-    @Autowired
-    private AccountService account_formater;
 
     public static final long HOUR = 3600*1000; // in milli-seconds.
 
 
-    public Long getUid_atc() {
-        return uid_atc;
+    public Long getUidAtc() {
+        return uidAtc;
     }
 
-    public void setUid_atc(Long uid_atc) {
-        this.uid_atc = uid_atc;
+    public void setUidAtc(Long uidAtc) {
+        this.uidAtc = uidAtc;
     }
 
     public String getType() {
@@ -127,12 +125,12 @@ public class History {
     }
 
 
-    public Historys getAll_call_this_number() {
-        return all_call_this_number;
+    public Historys getAllCallThisNumber() {
+        return allCallThisNumber;
     }
 
-    public void setAll_call_this_number(Historys all_call_this_number) {
-        this.all_call_this_number = all_call_this_number;
+    public void setAllCallThisNumber(Historys allCallThisNumber) {
+        this.allCallThisNumber = allCallThisNumber;
     }
 
 }

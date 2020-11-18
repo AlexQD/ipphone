@@ -11,9 +11,4 @@ import java.util.Optional;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long>
 {
-    @Override
-    Optional<Account> findById(Long id);
-
-    @Override
-    List<Account> findAll();
 }

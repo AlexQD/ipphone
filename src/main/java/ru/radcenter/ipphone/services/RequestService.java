@@ -1,5 +1,6 @@
 package ru.radcenter.ipphone.services;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.radcenter.ipphone.model.History;
 import ru.radcenter.ipphone.model.Historys;
@@ -15,9 +16,19 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 @Service
 public class RequestService {
+
+    @Value("${megafon.token}")
+    private String token;
+
+    @Value("${megafon.url.history}")
+    private String urlHistory;
 
     private static final HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
@@ -25,13 +36,13 @@ public class RequestService {
             .build();
 
     public Historys mappingHistory() throws ParseException {
-        String[] str = this.request_history().split("\\n"); // Разбиение текста на строки с помощью разграничителя (Enter)
+        String[] str = this.requestHistory().split("\\n"); // Разбиение текста на строки с помощью разграничителя (Enter)
         Historys historys = new Historys();
         for (String subStr : str) {
             String[] words = subStr.split(","); // Разбиение текста на слова с помощью разграничителя (,)
             //----------
             History history = new History();
-            history.setUid_atc(Long.parseLong(words[0]));
+            history.setUidAtc(Long.parseLong(words[0]));
             history.setType(words[1]);
             history.setClient(words[2]);
             history.setAccount(words[3]);
@@ -48,19 +59,19 @@ public class RequestService {
     }
 
     //Получение истории звонков с облачной телефонии
-    public String request_history()  {
+    private String requestHistory()  {
 
         // form parameters
         Map<Object, Object> data = new HashMap<>();
         data.put("cmd", "history");
         data.put("period", "today");
-        data.put("token", "0000-0000-0000-0000-0000");
+        data.put("token", token);
 
 
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(buildFormDataFromMap(data))
-                .uri(URI.create("https://vats000000.megapbx.ru/sys/crm_api.wcgp"))
-                .setHeader("User-Agent", "browser java ")
+                .uri(URI.create(urlHistory))
+                .setHeader("User-Agent", "Fvcmr java ")
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .build();
 
@@ -82,9 +93,9 @@ public class RequestService {
             if (builder.length() > 0) {
                 builder.append("&");
             }
-            builder.append(URLEncoder.encode(entry.getKey().toString(), StandardCharsets.UTF_8));
-            builder.append("=");
-            builder.append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
+            builder.append(URLEncoder.encode(entry.getKey().toString(), StandardCharsets.UTF_8))
+            .append("=")
+            .append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
         }
         return HttpRequest.BodyPublishers.ofString(builder.toString());
     }

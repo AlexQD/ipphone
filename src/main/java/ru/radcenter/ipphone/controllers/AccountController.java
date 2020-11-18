@@ -11,7 +11,7 @@ import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 
 @RestController
 @RequestMapping("/api/v1/account")
-public class AccountController {
+final public class AccountController {
 
     @Autowired
     private AccountService accountService;

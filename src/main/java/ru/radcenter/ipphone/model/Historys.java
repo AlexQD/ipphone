@@ -12,58 +12,58 @@ import java.util.Set;
 
 
 public class Historys {
-    private ArrayList<History> history_array;
+    private ArrayList<History> historyArray;
 
     @Autowired
     private HistoryService historyService;
 
     public Historys(){
-        history_array = new ArrayList<>();
+        historyArray = new ArrayList<>();
     }
 
-    public ArrayList<History> getHistory_array() {
-        return history_array;
+    public ArrayList<History> getHistoryArray() {
+        return historyArray;
     }
 
-    public void setHistory_array(ArrayList<History> history_array) {
-        this.history_array = history_array;
+    public void setHistoryArray(ArrayList<History> historyArray) {
+        this.historyArray = historyArray;
     }
 
     public void add(History history){
-        history_array.add(history);
+        historyArray.add(history);
     }
 
 
     public void print(){
-        for (int i = 0; i < history_array.size(); ++i) {
-            System.out.println(history_array.get(i).getUid_atc());
+        for (int i = 0; i < historyArray.size(); ++i) {
+            System.out.println(historyArray.get(i).getUidAtc());
 
         }
     }
 
-    public Historys missing_call(History history){
-        Historys missing_calls_client = new Historys();
-        for (int i = 0; i < history_array.size(); ++i) {
-            if (history_array.get(i).getClient().equals(history.getClient())){
-                missing_calls_client.add(history_array.get(i));
+    public Historys missingCall(History history){
+        Historys missingCallsClient = new Historys();
+        for (int i = 0; i < historyArray.size(); ++i) {
+            if (historyArray.get(i).getClient().equals(history.getClient())){
+                missingCallsClient.add(historyArray.get(i));
             }
         }
-        return missing_calls_client;
+        return missingCallsClient;
     }
 
-    public void del_dublicate(){
+    public void delDublicate(){
         HashMap<String, History> hashMap = new HashMap<>();
-        for (int i = 0; i < history_array.size(); ++i) {
-            hashMap.put(history_array.get(i).getClient(),history_array.get(i));
+        for (int i = 0; i < historyArray.size(); ++i) {
+            hashMap.put(historyArray.get(i).getClient(),historyArray.get(i));
         }
-        history_array.clear();
-        history_array = new ArrayList<>(hashMap.values());
+        historyArray.clear();
+        historyArray = new ArrayList<>(hashMap.values());
     }
 
 
-    public void save_bd(){
-        for (int i = 0; i < history_array.size(); ++i) {
-            historyService.save(history_array.get(i));
+    public void saveBd(){
+        for (int i = 0; i < historyArray.size(); ++i) {
+            historyService.save(historyArray.get(i));
         }
     }
 

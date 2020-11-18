@@ -3,7 +3,7 @@ package ru.radcenter.ipphone.dto;
 import java.util.Date;
 
 public class HistoryDto {
-    private Long uid_atc;
+    private Long uidAtc;
     private String type;
     private String client; //номер клиента
     private String account;
@@ -13,12 +13,12 @@ public class HistoryDto {
     private String duration; // длителность разговора
     private String record;
 
-    public Long getUid_atc() {
-        return uid_atc;
+    public Long getUidAtc() {
+        return uidAtc;
     }
 
-    public void setUid_atc(Long uid_atc) {
-        this.uid_atc = uid_atc;
+    public void setUidAtc(Long uidAtc) {
+        this.uidAtc = uidAtc;
     }
 
     public String getType() {

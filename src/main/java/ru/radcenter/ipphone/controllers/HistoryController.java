@@ -15,7 +15,7 @@ import java.text.ParseException;
 
 
 @Controller
-public class HistoryController {
+final public class HistoryController {
 
     @Autowired
     private RequestService requestService;
@@ -27,12 +27,12 @@ public class HistoryController {
     private AccountService accountService;
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
-    public String Index(Model model)  {
+    public String index(Model model)  {
         return "index";
     }
     
     @RequestMapping(value = {"gethistory"}, method = RequestMethod.GET)
-    public String GetHistory(Model model) throws ParseException {
+    public String getHistory(Model model) throws ParseException {
         //Сервис requestService загружает историю звонков и парсит ее
         Historys historys = requestService.mappingHistory();
         model.addAttribute("historys", historys);
@@ -41,12 +41,12 @@ public class HistoryController {
     }
 
     @RequestMapping(value = {"save"}, method = RequestMethod.GET)
-    public String SaveHistory(Model model) throws ParseException {
+    public String saveHistory(Model model) throws ParseException {
         //Сервис requestService загружает историю звонков и парсит ее
         Historys historys = requestService.mappingHistory();
 
-        for (int i = 0; i < historys.getHistory_array().size(); ++i) {
-            historyService.save(historys.getHistory_array().get(i));
+        for (int i = 0; i < historys.getHistoryArray().size(); ++i) {
+            historyService.save(historys.getHistoryArray().get(i));
         }
 
         model.addAttribute("historys", historys);
