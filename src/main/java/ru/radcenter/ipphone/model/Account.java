@@ -7,8 +7,9 @@ import javax.persistence.*;
 public class Account {
 
     @Id
-    private String phone;
     private String account;
+
+    private String phone;
     private String address;
 
 

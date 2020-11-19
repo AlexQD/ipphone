@@ -17,7 +17,11 @@ public class History {
     private Long uidAtc;
     private String type;
     private String client; //номер клиента
-    private String account;
+
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(foreignKey = @ForeignKey(name = "account_id"), name = "account")
+    private Account account;
+
     private String via; // номер клиента
     private Date start; // дата начала звонка
     private String wait; // ожидание;
@@ -70,17 +74,12 @@ public class History {
         this.client = client;
     }
 
-    public String getAccount() {
+
+    public Account getAccount() {
         return account;
     }
 
-    public String getAccountPrint() {
-
-        return account;
-
-    }
-
-    public void setAccount(String account) {
+    public void setAccount(Account account) {
         this.account = account;
     }
 

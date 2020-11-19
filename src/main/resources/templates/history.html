@@ -56,7 +56,7 @@
 
     </tr>
     </thead>
-    <tr th:each="el,iState :${historys.getHistory_array()}">
+    <tr th:each="el,iState :${historys.getHistoryArray()}">
         <td th:utext="${iState.index+1}"></td>
 <!--        <td th:utext="${el.getUid_atc()}"></td>-->
         <td th:utext="${el.getType()}"></td>

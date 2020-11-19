@@ -44,12 +44,12 @@
 <!--        <th >Прочие вызовы</th>-->
 
     </tr>
-    <tr th:each="el,iState :${historys.getHistory_array()}">
+    <tr th:each="el,iState :${historys.getHistoryArray()}">
         <td th:utext="${iState.index+1}"></td>
-        <td th:utext="${el.getUid_atc()}"></td>
+        <td th:utext="${el.getUidAtc()}"></td>
         <td th:utext="${el.getTypePrint()}"></td>
         <td th:utext="${el.getClient()}"></td>
-        <td th:utext="${account_service.getAccounttoHistory(el).getAddress()}"></td>
+        <td th:utext="${el.getAccount()}"></td>
         <td th:utext="${el.getVia()}"></td>
         <td th:utext="${el.getStart()}"></td>
         <td th:utext="${el.getWait()}"></td>

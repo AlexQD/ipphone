@@ -1,9 +1,15 @@
 package ru.radcenter.ipphone.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.radcenter.ipphone.dto.AccountDto;
+import ru.radcenter.ipphone.dto.HistoryDto;
+import ru.radcenter.ipphone.dto.HistorysDto;
+import ru.radcenter.ipphone.model.Account;
 import ru.radcenter.ipphone.model.History;
 import ru.radcenter.ipphone.model.Historys;
+import ru.radcenter.ipphone.repository.AccountRepository;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -14,8 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -23,6 +28,9 @@ import java.util.concurrent.TimeoutException;
 
 @Service
 public class RequestService {
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Value("${megafon.token}")
     private String token;
@@ -35,24 +43,30 @@ public class RequestService {
             .connectTimeout(Duration.ofSeconds(10))
             .build();
 
-    public Historys mappingHistory() throws ParseException {
+    public HistorysDto mappingHistory() throws ParseException {
         String[] str = this.requestHistory().split("\\n"); // Разбиение текста на строки с помощью разграничителя (Enter)
-        Historys historys = new Historys();
+        HistorysDto historys = new HistorysDto();
+        List<Account> aссountList = accountRepository.findAll();
         for (String subStr : str) {
             String[] words = subStr.split(","); // Разбиение текста на слова с помощью разграничителя (,)
+
+            Account account = new Account();
+            account.setAccount(words[3]);
+            account.setPhone("");
+            account.setAddress("");
             //----------
             History history = new History();
             history.setUidAtc(Long.parseLong(words[0]));
             history.setType(words[1]);
             history.setClient(words[2]);
-            history.setAccount(words[3]);
+            history.setAccount(account);
             history.setVia(words[4]);
             history.setStart(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(words[5]));
             history.setWait(words[6]);
             history.setDuration(words[7]);
             history.setRecord(words[8]);
             //----------
-            historys.add(history);
+            historys.getHistoryArray().add(history);
             // }
         }
         return historys;
