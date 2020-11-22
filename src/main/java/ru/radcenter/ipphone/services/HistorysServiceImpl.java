@@ -18,34 +18,35 @@ public class HistorysServiceImpl implements  HistorysService {
     @Autowired
     private AccountService accountService;
 
+
     public void save(HistorysDto historysDto){
         for (int i = 0; i < historysDto.getHistoryArray().size(); ++i) {
             historyService.save(historysDto.getHistoryArray().get(i));
         }
     }
-    public void print(Historys historys){
-        for (int i = 0; i < historys.getHistoryArray().size(); ++i) {
-            System.out.println(historys.getHistoryArray().get(i).getUidAtc());
+    public void print(HistorysDto historys){
 
-        }
+        historys.getHistoryArray().forEach(history -> {
+            System.out.println(history.getUidAtc());
+        });
     }
 
     public void delDublicate(Historys historys){
         HashMap<String, History> hashMap = new HashMap<>();
-        for (int i = 0; i < historys.getHistoryArray().size(); ++i) {
-            hashMap.put(historys.getHistoryArray().get(i).getClient(),historys.getHistoryArray().get(i));
-        }
+        historys.getHistoryArray().forEach(history -> {
+            hashMap.put(history.getClient(), history);
+        });
         historys.clear();
         historys.setHistoryArray( new ArrayList<>(hashMap.values()));
     }
 
     public Historys missingCall(Historys historys, History history){
         Historys missingCallsClient = new Historys();
-        for (int i = 0; i < historys.getHistoryArray().size(); ++i) {
-            if (historys.getHistoryArray().get(i).getClient().equals(history.getClient())){
-                missingCallsClient.add(historys.getHistoryArray().get(i));
-            }
-        }
+        historys.getHistoryArray().forEach(history1 -> {
+           if (history1.getClient().equals(history.getClient())){
+               missingCallsClient.add(history1);
+           }
+        });
         return missingCallsClient;
     }
 

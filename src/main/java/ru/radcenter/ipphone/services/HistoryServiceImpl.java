@@ -16,13 +16,6 @@ public class HistoryServiceImpl implements HistoryService{
 
     @Override
     public void save(History history){
-//        History history = new History();
-//        history.setUid_atc(historyDto.getUid_atc());
-//        history.setAccount(historyDto.getAccount());
-//        history.setClient(historyDto.getClient());
-//        history.setDuration(historyDto.getDuration());
-//        history.setRecord(historyDto.getRecord());
-//        history.setStart(historyDto.getStart());
         historyRepository.save(history);
     };
 }

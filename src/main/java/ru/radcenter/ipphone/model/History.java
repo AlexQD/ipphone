@@ -15,7 +15,9 @@ public class History {
     @Id
     @Column(name="uid_atc")
     private Long uidAtc;
-    private String type;
+
+    @Enumerated(EnumType.STRING)
+    private TypeCall type;
     private String client; //номер клиента
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
@@ -47,23 +49,24 @@ public class History {
     }
 
     public String getType() {
-        return type;
+        return type.toString();
 
     }
 
     //вывод информации во view
     public String getTypePrint() {
-        switch (this.type){
-            case "in": return "Входящий";
-            case "out": return "Исходящий";
-            case "missed": return "Пропущенный";
-            default: return this.type;
-        }
+        return type.label;
+//        switch (this.type){
+//            case "in": return "Входящий";
+//            case "out": return "Исходящий";
+//            case "missed": return "Пропущенный";
+//            default: return this.type;
+//        }
     }
 
 
     public void setType(String type) {
-        this.type = type;
+        this.type = TypeCall.valueOf(type);
     }
 
     public String getClient() {
