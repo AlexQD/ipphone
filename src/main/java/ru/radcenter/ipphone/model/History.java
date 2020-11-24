@@ -56,12 +56,7 @@ public class History {
     //вывод информации во view
     public String getTypePrint() {
         return type.label;
-//        switch (this.type){
-//            case "in": return "Входящий";
-//            case "out": return "Исходящий";
-//            case "missed": return "Пропущенный";
-//            default: return this.type;
-//        }
+
     }
 
 

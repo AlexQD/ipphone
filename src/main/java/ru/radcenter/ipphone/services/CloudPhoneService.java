@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 @Service
-public class RequestService {
+public class CloudPhoneService {
 
     @Autowired
     private AccountRepository accountRepository;
