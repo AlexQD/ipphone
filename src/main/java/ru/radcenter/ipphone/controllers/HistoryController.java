@@ -16,16 +16,26 @@ import java.text.ParseException;
 final public class HistoryController {
 
     @Autowired
-    private CloudPhoneService cloudPhoneService;
+    private final CloudPhoneService cloudPhoneService;
 
     @Autowired
-    private HistoryService historyService;
+    private final HistoryService historyService;
 
     @Autowired
-    private HistorysService historysService;
+    private final HistorysService historysService;
 
     @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
+
+    public HistoryController(CloudPhoneService cloudPhoneService,
+                             HistoryService historyService,
+                             HistorysService historysService,
+                             AccountService accountService){
+        this.cloudPhoneService = cloudPhoneService;
+        this.historyService = historyService;
+        this.historysService= historysService;
+        this.accountService = accountService;
+    }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String index(Model model)  {
