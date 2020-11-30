@@ -1,1 +1,1 @@
-alter table account drop constraint account_pk;
+alter table account drop constraint account_pkey;
