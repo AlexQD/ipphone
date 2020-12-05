@@ -31,12 +31,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http
+                .cors().disable()
+                .csrf().disable()
+                .authorizeRequests()
                 .antMatchers("/gethistory/**").hasRole("ADMIN")
+                .antMatchers("/api/v1/account/create").hasRole("ADMIN")
                 .and()
-                .formLogin()
-                .and()
-                .logout().logoutSuccessUrl("/");
+                .httpBasic();
+//                .formLogin()
+//                .and()
+//                .logout().logoutSuccessUrl("/");
     }
 
 
