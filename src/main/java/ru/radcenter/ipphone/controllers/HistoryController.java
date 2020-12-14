@@ -51,6 +51,7 @@ final public class HistoryController {
         return "history_all";
     }
 
+
     @RequestMapping(value = {"save"}, method = RequestMethod.GET)
     public String saveHistory(Model model) throws ParseException {
         //Сервис requestService загружает историю звонков и парсит ее

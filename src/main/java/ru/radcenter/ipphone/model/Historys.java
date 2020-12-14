@@ -1,5 +1,6 @@
 package ru.radcenter.ipphone.model;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.radcenter.ipphone.model.History;
 import ru.radcenter.ipphone.repository.HistoryRepository;

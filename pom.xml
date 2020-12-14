@@ -60,6 +60,13 @@
 			<version>3.11</version>
 		</dependency>
 
+		<!-- JSON Web Token lib -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.8.0</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.flywaydb</groupId>
@@ -99,6 +106,11 @@
 			<version>3.0.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-data-rest</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

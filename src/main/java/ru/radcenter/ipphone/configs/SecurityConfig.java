@@ -3,64 +3,60 @@ package ru.radcenter.ipphone.configs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import ru.radcenter.ipphone.services.UserService;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
-import javax.sql.DataSource;
+import ru.radcenter.ipphone.security.jwt.JwtConfigurer;
+import ru.radcenter.ipphone.security.jwt.JwtTokenProvider;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
+//@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private UserService userService;
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    private static final String[] AUTH_LIST = {
+            "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**"
+    };
 
     @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
     }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        //TODO Разобраться  как разрешить swagger
+        http.cors().disable()
+                .csrf().disable().authorizeRequests().antMatchers(AUTH_LIST).permitAll();
+
         http
-                .cors().disable()
+                .httpBasic().disable()
                 .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
+                .antMatchers("/api/v1/auth/login").permitAll()
                 .antMatchers("/gethistory/**").hasRole("ADMIN")
                 .antMatchers("/api/v1/account/create").hasRole("ADMIN")
+                .anyRequest().authenticated()
                 .and()
-                .httpBasic();
-//                .formLogin()
-//                .and()
-//                .logout().logoutSuccessUrl("/");
+                .apply(new JwtConfigurer(jwtTokenProvider));
+
     }
 
-
-    @Bean
-    public JdbcUserDetailsManager users(DataSource dataSource) {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-        return jdbcUserDetailsManager;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService(userService);
-        return authenticationProvider;
-    }
 }
