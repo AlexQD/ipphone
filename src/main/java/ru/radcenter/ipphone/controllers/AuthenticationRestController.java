@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.radcenter.ipphone.dto.AuthenticationRequestDto;
 import ru.radcenter.ipphone.model.User;
 import ru.radcenter.ipphone.security.jwt.JwtTokenProvider;
+import ru.radcenter.ipphone.services.AuthenticationService;
 import ru.radcenter.ipphone.services.UserService;
 
 import java.util.HashMap;
@@ -23,39 +24,15 @@ import java.util.Map;
 @RequestMapping(value = "/api/v1/auth/")
 public class AuthenticationRestController {
 
-    private final AuthenticationManager authenticationManager;
-
-    private final JwtTokenProvider jwtTokenProvider;
-
-    private final UserService userService;
+    private final AuthenticationService authenticationService;
 
     @Autowired
-    public AuthenticationRestController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.userService = userService;
+    public AuthenticationRestController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
     }
 
     @PostMapping("login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) {
-        try {
-            String username = requestDto.getUsername();
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
-            User user = userService.findByUsername(username);
-
-            if (user == null) {
-                throw new UsernameNotFoundException("User with username: " + username + " not found");
-            }
-
-            String token = jwtTokenProvider.createToken(username, user.getRoles());
-
-            Map<Object, Object> response = new HashMap<>();
-            response.put("username", username);
-            response.put("token", token);
-
-            return ResponseEntity.ok(response);
-        } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid username or password");
-        }
+        return authenticationService.AuthenticationRestService(requestDto);
     }
 }

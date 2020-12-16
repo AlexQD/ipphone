@@ -1,15 +1,19 @@
 package ru.radcenter.ipphone.security.jwt;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@Data
 public class JwtUser implements UserDetails {
 
+    @JsonIgnore
     private final Long id;
     private final String username;
+    @JsonIgnore
     private final String password;
     private final String email;
     private final Collection<? extends GrantedAuthority> authorities;
@@ -27,10 +31,7 @@ public class JwtUser implements UserDetails {
         this.authorities = authorities;
     }
 
-    @JsonIgnore
-    public Long getId() {
-        return id;
-    }
+
 
 
     @JsonIgnore
@@ -56,21 +57,6 @@ public class JwtUser implements UserDetails {
         return true;
     }
 
-
-    public String getEmail() {
-        return email;
-    }
-
-    @JsonIgnore
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -21,7 +21,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
 
     private static final String[] AUTH_LIST = {
-            "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**"
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/v2/api-docs",
+            "/webjars/**"
     };
 
     @Autowired
@@ -40,7 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        //TODO Разобраться  как разрешить swagger
         http.cors().disable()
                 .csrf().disable().authorizeRequests().antMatchers(AUTH_LIST).permitAll();
 

@@ -37,12 +37,12 @@ final public class HistoryController {
         this.accountService = accountService;
     }
 
-    @RequestMapping(value = {"/"}, method = RequestMethod.GET)
+    @GetMapping(value = {"/"})
     public String index(Model model)  {
         return "index";
     }
     
-    @RequestMapping(value = {"gethistory"}, method = RequestMethod.GET)
+    @GetMapping(value = {"gethistory"})
     public String getHistory(Model model) throws ParseException {
         //Сервис requestService загружает историю звонков и парсит ее
         HistorysDto historys = cloudPhoneService.mappingHistory();
@@ -51,8 +51,7 @@ final public class HistoryController {
         return "history_all";
     }
 
-
-    @RequestMapping(value = {"save"}, method = RequestMethod.GET)
+    @GetMapping(value = {"save"})
     public String saveHistory(Model model) throws ParseException {
         //Сервис requestService загружает историю звонков и парсит ее
         HistorysDto historys = cloudPhoneService.mappingHistory();
