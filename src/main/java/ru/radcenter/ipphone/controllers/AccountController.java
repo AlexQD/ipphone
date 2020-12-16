@@ -25,5 +25,4 @@ public class AccountController {
         accountService.save(accountDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
 }
